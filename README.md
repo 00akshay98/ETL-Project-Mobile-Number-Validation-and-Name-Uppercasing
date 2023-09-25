@@ -15,12 +15,34 @@ Load:
 After the transformation phase, the cleaned and standardized data can be loaded back into the source or into a new destination, depending on your requirements.
 
 How to Use:
-Clone or download this repository to your local machine.
-Prepare your dataset in the desired format (CSV, Excel, etc.) and place it in the project folder.
-Modify the Python and R scripts to suit your dataset's structure and requirements.
-Run the Python script for mobile number validation and the R script for name uppercase conversion.
-Review the transformed data for accuracy and consistency.
-Load the cleaned data as needed.
+# Python Libraries
+import pandas as pd
+import re
+
+# Load the source CSV file
+source_file = 'input_data.csv'
+data = pd.read_csv(source_file)
+
+# Function to validate mobile numbers
+def validate_mobile_number(number):
+    # Regular expression for a 10-digit Indian mobile number
+    pattern = re.compile(r'^[6789]\d{9}$')
+    return pattern.match(str(number)) is not None
+
+# Function to convert names to uppercase
+def convert_to_uppercase(name):
+    return name.upper()
+
+# Validate mobile numbers and convert names to uppercase
+data['MobileNumberValid'] = data['MobileNumber'].apply(validate_mobile_number)
+data['Name'] = data['Name'].apply(convert_to_uppercase)
+
+# Save the transformed data to a new CSV file
+output_file = 'output_data.csv'
+data.to_csv(output_file, index=False)
+
+print("ETL process completed successfully!")
+
 
 Technologies Used:
 Python
